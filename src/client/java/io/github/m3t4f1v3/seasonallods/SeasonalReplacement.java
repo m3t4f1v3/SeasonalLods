@@ -15,6 +15,17 @@ public class SeasonalReplacement {
     public static String currentSeason = "DISABLED";
     public static Integer currentSubSeasonPhase = -1;
 
+
+    public static boolean hasReplacement(Biome biome) {
+        ResourceLocation biomeKey = Minecraft.getInstance().level.registryAccess()
+                .lookupOrThrow(Registries.BIOME)
+                .getKey(biome);
+
+        String biomeIdString = biomeKey.toString();
+        BiomeReplacement replacement = biomeReplacements.get(biomeIdString);
+        return replacement != null;
+    }
+
     public static Biome replaceBiomeIfPossible(Biome biome) {
         ResourceLocation biomeKey = Minecraft.getInstance().level.registryAccess()
                 .lookupOrThrow(Registries.BIOME)
@@ -22,26 +33,31 @@ public class SeasonalReplacement {
 
         String biomeIdString = biomeKey.toString();
 
-        if (biomeKey.getNamespace().equalsIgnoreCase("realisticseasons")) {
-            String originalBiomeId = backtrackToOriginal(biomeIdString);
-            if (originalBiomeId != null) biomeIdString = originalBiomeId;
-        }
+        // disabled since backtracking should never be necessary now
+        // if (biomeKey.getNamespace().equalsIgnoreCase("realisticseasons")) {
+        //     String originalBiomeId = backtrackToOriginal(biomeIdString);
+        //     if (originalBiomeId != null) biomeIdString = originalBiomeId;
+        //     // hardcoded
+        //     System.out.println(biomeKey);
+        //     if (biomeKey.getPath().equalsIgnoreCase("152")) {
+        //         System.out.println("Hardcoded biome replacement triggered for RS biome 152");
+        //         return Minecraft.getInstance().level.registryAccess()
+        //             .lookupOrThrow(Registries.BIOME)
+        //             .getValue(ResourceLocation.tryParse("realisticseasons:16"));
+        //     }; 
+        // }
 
         BiomeReplacement replacement = biomeReplacements.get(biomeIdString);
         if (replacement == null) return biome;
 
         Seasons seasonData;
 
-        if (currentSubSeasonPhase != null && replacement.getSUB_SEASONS() != null) {
-            for (Map.Entry<String, Seasons> subEntry : replacement.getSUB_SEASONS().entrySet()) {
-                int phase = parseSubSeasonPhase(subEntry.getKey());
-                if (phase == currentSubSeasonPhase || (phase == 3 && currentSubSeasonPhase > 3)) {
-                    seasonData = subEntry.getValue();
-                    Biome result = getSeasonalBiome(seasonData, currentSeason);
-                    // System.out.println("Sub-season biome replacement check for " + biomeIdString + " in sub-season " + subEntry.getKey() + " for season " + currentSeason + " returned " + (result != null ? biomeKey.toString() : "null"));
-                    if (result != null) return result;
-                }
-            }
+        if (currentSubSeasonPhase != -1 && replacement.getSUB_SEASONS() != null) {
+           Biome result = getSeasonalBiome(
+                replacement.getSUB_SEASONS().get(parseSubSeasonPhase(currentSubSeasonPhase)),
+                currentSeason
+            );
+            if (result != null) return result;
         }
 
         seasonData = replacement.getSEASONS();
@@ -99,13 +115,13 @@ public class SeasonalReplacement {
         return null;
     }
 
-    private static int parseSubSeasonPhase(String subSeasonName) {
-        return switch (subSeasonName.toUpperCase()) {
-            case "START" -> 0;
-            case "EARLY" -> 1;
-            case "MIDDLE" -> 2;
-            case "LATE" -> 3;
-            default -> throw new IllegalArgumentException("Unknown sub-season phase: " + subSeasonName);
+    private static String parseSubSeasonPhase(int subSeasonPhase) {
+        return switch (subSeasonPhase) {
+            case 0 -> "START";
+            case 1 -> "EARLY";
+            case 2 -> "MIDDLE";
+            case 3 -> "LATE";
+            default -> throw new IllegalArgumentException("Unknown sub-season phase: " + subSeasonPhase);
         };
     }
 }

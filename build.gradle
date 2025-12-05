@@ -41,7 +41,6 @@ loom {
 			sourceSet sourceSets.client
 		}
 	}
-
 }
 
 dependencies {
@@ -53,12 +52,13 @@ dependencies {
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-	implementation("xyz.bluspring.modernnetworking:modernnetworking-api:1.2.2")
-	modImplementation("xyz.bluspring.modernnetworking:modernnetworking-fabric:1.2.2+1.21.10")
+	implementation("xyz.bluspring.modernnetworking:modernnetworking-api:1.2.4")
+	modImplementation("xyz.bluspring.modernnetworking:modernnetworking-fabric:1.2.4+1.21.10")
 	modImplementation("net.fabricmc:fabric-language-kotlin:1.13.7+kotlin.2.2.21")
-	modImplementation("maven.modrinth:voxy:0.2.6-alpha")
+	modCompileOnly("maven.modrinth:voxy:0.2.6-alpha")
+	modRuntimeOnly("maven.modrinth:voxy:0.2.6-alpha")
 	modRuntimeOnly("maven.modrinth:sodium:mc1.21.10-0.7.2-fabric")
-    modCompileOnly("maven.modrinth:sodium:mc1.21.10-0.7.2-fabric")
+    // modCompileOnly("maven.modrinth:sodium:mc1.21.10-0.7.2-fabric")
 	runtimeOnly("org.lwjgl:lwjgl")
     runtimeOnly("org.lwjgl:lwjgl-lmdb")
     runtimeOnly("org.lwjgl:lwjgl-zstd")

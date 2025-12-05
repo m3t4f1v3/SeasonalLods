@@ -13,7 +13,6 @@ public class SeasonalLodsConfig {
     private static final File FILE = new File("config/seasonallods.json");
 
     public boolean reloadOnSeasonChange = true;
-    public boolean overrideSpringColors = true;
 
     public static SeasonalLodsConfig INSTANCE = load();
 

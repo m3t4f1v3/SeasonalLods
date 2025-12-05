@@ -3,7 +3,8 @@
 	"package": "io.github.m3t4f1v3.seasonallods.mixin.client",
 	"compatibilityLevel": "JAVA_21",
 	"client": [
-		"MixinModelFactory"
+		"MixinBlockColors",
+		"MixinBiome"
 	],
 	"injectors": {
 		"defaultRequire": 1
