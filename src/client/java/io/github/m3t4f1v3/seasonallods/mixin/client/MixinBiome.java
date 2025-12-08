@@ -14,8 +14,8 @@ import net.minecraft.world.level.biome.BiomeSpecialEffects;
 public class MixinBiome {
     @WrapMethod(method = "getSkyColor")
     public int getSkyColor(Operation<Integer> original) {
-        if (SeasonalReplacement.hasReplacement((Biome)(Object)this)) {
-            Biome replacedBiome = SeasonalReplacement.replaceBiomeIfPossible((Biome)(Object)this);
+        Biome replacedBiome = SeasonalReplacement.replaceBiomeIfPossible((Biome)(Object)this);
+        if (replacedBiome != null && !replacedBiome.equals((Biome)(Object)this)) {
             return replacedBiome.getSkyColor();
         }
         return original.call();
@@ -23,8 +23,8 @@ public class MixinBiome {
 
     @WrapMethod(method = "getFogColor")
     public int getFogColor(Operation<Integer> original) {
-        if (SeasonalReplacement.hasReplacement((Biome)(Object)this)) {
-            Biome replacedBiome = SeasonalReplacement.replaceBiomeIfPossible((Biome)(Object)this);
+        Biome replacedBiome = SeasonalReplacement.replaceBiomeIfPossible((Biome)(Object)this);
+        if (replacedBiome != null && !replacedBiome.equals((Biome)(Object)this)) {
             return replacedBiome.getFogColor();
         }
         return original.call();
@@ -32,8 +32,8 @@ public class MixinBiome {
 
     @WrapMethod(method = "getGrassColor")
     public int getGrassColor(double d, double e, Operation<Integer> original) {
-        if (SeasonalReplacement.hasReplacement((Biome)(Object)this)) {
-            Biome replacedBiome = SeasonalReplacement.replaceBiomeIfPossible((Biome)(Object)this);
+        Biome replacedBiome = SeasonalReplacement.replaceBiomeIfPossible((Biome)(Object)this);
+        if (replacedBiome != null && !replacedBiome.equals((Biome)(Object)this)) {
             return replacedBiome.getGrassColor(d, e);
         }
         return original.call(d, e);
@@ -41,8 +41,8 @@ public class MixinBiome {
 
     @WrapMethod(method = "getFoliageColor")
     public int getFoliageColor(Operation<Integer> original) {
-        if (SeasonalReplacement.hasReplacement((Biome)(Object)this)) {
-            Biome replacedBiome = SeasonalReplacement.replaceBiomeIfPossible((Biome)(Object)this);
+        Biome replacedBiome = SeasonalReplacement.replaceBiomeIfPossible((Biome)(Object)this);
+        if (replacedBiome != null && !replacedBiome.equals((Biome)(Object)this)) {
             return replacedBiome.getFoliageColor();
         }
         return original.call();
@@ -50,8 +50,8 @@ public class MixinBiome {
 
     @WrapMethod(method = "getDryFoliageColor")
     public int getDryFoliageColor(Operation<Integer> original) {
-        if (SeasonalReplacement.hasReplacement((Biome)(Object)this)) {
-            Biome replacedBiome = SeasonalReplacement.replaceBiomeIfPossible((Biome)(Object)this);
+        Biome replacedBiome = SeasonalReplacement.replaceBiomeIfPossible((Biome)(Object)this);
+        if (replacedBiome != null && !replacedBiome.equals((Biome)(Object)this)) {
             return replacedBiome.getDryFoliageColor();
         }
         return original.call();
@@ -59,8 +59,8 @@ public class MixinBiome {
 
     @WrapMethod(method = "getWaterColor")
     public int getWaterColor(Operation<Integer> original) {
-        if (SeasonalReplacement.hasReplacement((Biome)(Object)this)) {
-            Biome replacedBiome = SeasonalReplacement.replaceBiomeIfPossible((Biome)(Object)this);
+        Biome replacedBiome = SeasonalReplacement.replaceBiomeIfPossible((Biome)(Object)this);
+        if (replacedBiome != null && !replacedBiome.equals((Biome)(Object)this)) {
             return replacedBiome.getWaterColor();
         }
         return original.call();
@@ -68,8 +68,8 @@ public class MixinBiome {
 
     @WrapMethod(method = "getWaterFogColor")
     public int getWaterFogColor(Operation<Integer> original) {
-        if (SeasonalReplacement.hasReplacement((Biome)(Object)this)) {
-            Biome replacedBiome = SeasonalReplacement.replaceBiomeIfPossible((Biome)(Object)this);
+        Biome replacedBiome = SeasonalReplacement.replaceBiomeIfPossible((Biome)(Object)this);
+        if (replacedBiome != null && !replacedBiome.equals((Biome)(Object)this)) {
             return replacedBiome.getWaterFogColor();
         }
         return original.call();
@@ -77,8 +77,8 @@ public class MixinBiome {
 
     @WrapMethod(method = "hasPrecipitation")
     public boolean hasPrecipitation(Operation<Boolean> original) {
-        if (SeasonalReplacement.hasReplacement((Biome)(Object)this)) {
-            Biome replacedBiome = SeasonalReplacement.replaceBiomeIfPossible((Biome)(Object)this);
+        Biome replacedBiome = SeasonalReplacement.replaceBiomeIfPossible((Biome)(Object)this);
+        if (replacedBiome != null && !replacedBiome.equals((Biome)(Object)this)) {
             return replacedBiome.hasPrecipitation();
         }
         return original.call();
@@ -86,8 +86,8 @@ public class MixinBiome {
 
     @WrapMethod(method = "getPrecipitationAt")
     public Biome.Precipitation getPrecipitationAt(BlockPos pos, int i, Operation<Biome.Precipitation> original) {
-        if (SeasonalReplacement.hasReplacement((Biome)(Object)this)) {
-            Biome replacedBiome = SeasonalReplacement.replaceBiomeIfPossible((Biome)(Object)this);
+        Biome replacedBiome = SeasonalReplacement.replaceBiomeIfPossible((Biome)(Object)this);
+        if (replacedBiome != null && !replacedBiome.equals((Biome)(Object)this)) {
             return replacedBiome.getPrecipitationAt(pos, i);
         }
         return original.call(pos, i);
@@ -95,8 +95,8 @@ public class MixinBiome {
 
     @WrapMethod(method = "coldEnoughToSnow")
     public boolean coldEnoughToSnow(BlockPos pos, int i, Operation<Boolean> original) {
-        if (SeasonalReplacement.hasReplacement((Biome)(Object)this)) {
-            Biome replacedBiome = SeasonalReplacement.replaceBiomeIfPossible((Biome)(Object)this);
+        Biome replacedBiome = SeasonalReplacement.replaceBiomeIfPossible((Biome)(Object)this);
+        if (replacedBiome != null && !replacedBiome.equals((Biome)(Object)this)) {
             return replacedBiome.coldEnoughToSnow(pos, i);
         }
         return original.call(pos, i);
@@ -104,8 +104,8 @@ public class MixinBiome {
 
     @WrapMethod(method = "warmEnoughToRain")
     public boolean warmEnoughToRain(BlockPos pos, int i, Operation<Boolean> original) {
-        if (SeasonalReplacement.hasReplacement((Biome)(Object)this)) {
-            Biome replacedBiome = SeasonalReplacement.replaceBiomeIfPossible((Biome)(Object)this);
+        Biome replacedBiome = SeasonalReplacement.replaceBiomeIfPossible((Biome)(Object)this);
+        if (replacedBiome != null && !replacedBiome.equals((Biome)(Object)this)) {
             return replacedBiome.warmEnoughToRain(pos, i);
         }
         return original.call(pos, i);
@@ -113,8 +113,8 @@ public class MixinBiome {
 
     @WrapMethod(method = "shouldSnow")
     public boolean shouldSnow(LevelReader levelReader, BlockPos blockPos, Operation<Boolean> original) {
-        if (SeasonalReplacement.hasReplacement((Biome)(Object)this)) {
-            Biome replacedBiome = SeasonalReplacement.replaceBiomeIfPossible((Biome)(Object)this);
+        Biome replacedBiome = SeasonalReplacement.replaceBiomeIfPossible((Biome)(Object)this);
+        if (replacedBiome != null && !replacedBiome.equals((Biome)(Object)this)) {
             return replacedBiome.shouldSnow(levelReader, blockPos);
         }
         return original.call(levelReader, blockPos);
@@ -122,8 +122,8 @@ public class MixinBiome {
 
     @WrapMethod(method = "getBaseTemperature")
     public float getBaseTemperature(Operation<Float> original) {
-        if (SeasonalReplacement.hasReplacement((Biome)(Object)this)) {
-            Biome replacedBiome = SeasonalReplacement.replaceBiomeIfPossible((Biome)(Object)this);
+        Biome replacedBiome = SeasonalReplacement.replaceBiomeIfPossible((Biome)(Object)this);
+        if (replacedBiome != null && !replacedBiome.equals((Biome)(Object)this)) {
             return replacedBiome.getBaseTemperature();
         }
         return original.call();
@@ -131,8 +131,8 @@ public class MixinBiome {
 
     @WrapMethod(method = "getSpecialEffects")
     public BiomeSpecialEffects getSpecialEffects(Operation<BiomeSpecialEffects> original) {
-        if (SeasonalReplacement.hasReplacement((Biome)(Object)this)) {
-            Biome replacedBiome = SeasonalReplacement.replaceBiomeIfPossible((Biome)(Object)this);
+        Biome replacedBiome = SeasonalReplacement.replaceBiomeIfPossible((Biome)(Object)this);
+        if (replacedBiome != null && !replacedBiome.equals((Biome)(Object)this)) {
             return replacedBiome.getSpecialEffects();
         }
         return original.call();
