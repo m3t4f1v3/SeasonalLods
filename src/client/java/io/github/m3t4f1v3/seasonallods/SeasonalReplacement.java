@@ -17,6 +17,7 @@ public class SeasonalReplacement {
     public static Boolean useSubSeasons = false;
 
     public static Biome replaceBiomeIfPossible(Biome biome) {
+        if (currentSeason.equals("DISABLED")) return biome;
         ResourceLocation biomeKey = Minecraft.getInstance().level.registryAccess()
                 .lookupOrThrow(Registries.BIOME)
                 .getKey(biome);
