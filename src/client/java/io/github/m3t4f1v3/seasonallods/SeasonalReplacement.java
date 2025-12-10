@@ -12,12 +12,13 @@ import net.minecraft.world.level.biome.Biome;
 
 public class SeasonalReplacement {
     public static Map<String, BiomeReplacement> biomeReplacements = new ConcurrentHashMap<>();
-    public static String currentSeason = "DISABLED";
+    public static boolean overrideSeason = false;
+    public static String currentSeason = "SPRING";
     public static Integer currentSubSeasonPhase = 2;
     public static Boolean useSubSeasons = false;
 
     public static Biome replaceBiomeIfPossible(Biome biome) {
-        if (biomeReplacements.isEmpty() || currentSeason.equals("DISABLED")) return biome;
+        if (biomeReplacements.isEmpty() || !overrideSeason) return biome;
         ResourceLocation biomeKey = Minecraft.getInstance().level.registryAccess()
                 .lookupOrThrow(Registries.BIOME)
                 .getKey(biome);

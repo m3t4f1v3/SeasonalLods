@@ -5,20 +5,14 @@ import java.util.Map;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import com.mojang.brigadier.arguments.IntegerArgumentType;
-import com.mojang.brigadier.arguments.StringArgumentType;
-
 import io.github.m3t4f1v3.seasonallods.dto.BiomeReplacement;
 import io.netty.buffer.ByteBuf;
 import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
-import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.impl.networking.RegistrationPayload;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.common.ServerboundCustomPayloadPacket;
 import net.minecraft.resources.ResourceLocation;
 import xyz.bluspring.modernnetworking.api.CompositeCodecs;
@@ -78,7 +72,7 @@ public class SeasonalLodsClient implements ClientModInitializer {
         }
     }
 
-    private static void reloadInstance() {
+    public static void reloadInstance() {
         if (SeasonalLodsConfig.INSTANCE.reloadOnSeasonChange) {
             if (FabricLoader.getInstance().isModLoaded("voxy")) {
                 VoxyCompat.reloadVoxy();
@@ -92,63 +86,6 @@ public class SeasonalLodsClient implements ClientModInitializer {
     public void onInitializeClient() {
         // This entrypoint is suitable for setting up client-specific logic, such as
         // rendering.
-
-        ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
-            dispatcher.register(ClientCommandManager.literal("seasonallods")
-                    .then(ClientCommandManager.literal("setSeason")
-                            .then(ClientCommandManager.argument("season", StringArgumentType.word())
-                                    .executes(ctx -> {
-                                        String season = StringArgumentType.getString(ctx, "season").toUpperCase();
-
-                                        switch (season) {
-                                            case "DISABLED", "SPRING", "SUMMER", "FALL", "WINTER" -> {
-                                                SeasonalReplacement.currentSeason = season;
-                                                ctx.getSource()
-                                                        .sendFeedback(Component.literal("Set season to: " + season));
-                                            }
-                                            default -> {
-                                                ctx.getSource().sendError(Component.literal(
-                                                        "Invalid season. Allowed: DISABLED, SPRING, SUMMER, FALL, WINTER"));
-                                                return 0;
-                                            }
-                                        }
-
-                                        reloadInstance();
-
-                                        return 1;
-                                    }))));
-
-            dispatcher.register(ClientCommandManager.literal("seasonallods")
-                    .then(ClientCommandManager.literal("setSubSeason")
-                            .then(ClientCommandManager.argument("phase", IntegerArgumentType.integer(0, 4))
-                                    .executes(ctx -> {
-                                        int phase = IntegerArgumentType.getInteger(ctx, "phase");
-
-                                        SeasonalReplacement.currentSubSeasonPhase = phase;
-                                        ctx.getSource()
-                                                .sendFeedback(Component.literal("Set sub-season phase to: " + phase));
-                                        reloadInstance();
-
-                                        return 1;
-                                    }))));
-
-            dispatcher.register(ClientCommandManager.literal("seasonallods")
-                    .then(ClientCommandManager.literal("getSeason")
-                            .executes(ctx -> {
-                                ctx.getSource()
-                                        .sendFeedback(Component
-                                                .literal("Current season: " + SeasonalReplacement.currentSeason));
-                                return 1;
-                            })));
-            dispatcher.register(ClientCommandManager.literal("seasonallods")
-                    .then(ClientCommandManager.literal("getSubSeason")
-                            .executes(ctx -> {
-                                ctx.getSource()
-                                        .sendFeedback(Component.literal("Current sub-season phase: "
-                                                + SeasonalReplacement.currentSubSeasonPhase));
-                                return 1;
-                            })));
-        });
 
         ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
             sender.sendPacket(new ServerboundCustomPayloadPacket(new RegistrationPayload(RegistrationPayload.REGISTER,
@@ -175,6 +112,7 @@ public class SeasonalLodsClient implements ClientModInitializer {
                         .create();
                 Map<String, BiomeReplacement> parsed = gson.fromJson(json, type);
                 SeasonalReplacement.biomeReplacements.putAll(parsed);
+                SeasonalReplacement.overrideSeason = true;
                 if (!SeasonalReplacement.currentSeason.equals(season) || 
                     SeasonalReplacement.currentSubSeasonPhase != subSeason ||
                     SeasonalReplacement.useSubSeasons != useSubSeasons) {
@@ -205,9 +143,10 @@ public class SeasonalLodsClient implements ClientModInitializer {
 
         ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> {
             // SeasonalReplacement.biomeReplacements.clear();
-            SeasonalReplacement.currentSeason = "DISABLED";
-            SeasonalReplacement.currentSubSeasonPhase = 2;
-            SeasonalReplacement.useSubSeasons = false;
+            SeasonalReplacement.overrideSeason = false;
+            // SeasonalReplacement.currentSeason = "DISABLED";
+            // SeasonalReplacement.currentSubSeasonPhase = 2;
+            // SeasonalReplacement.useSubSeasons = false;
         });
     }
 }

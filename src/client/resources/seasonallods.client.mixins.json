@@ -4,7 +4,8 @@
 	"compatibilityLevel": "JAVA_21",
 	"client": [
 		"MixinBlockColors",
-		"MixinBiome"
+		"MixinBiome",
+		"flashback.MixinVisualsWindow"
 	],
 	"injectors": {
 		"defaultRequire": 1

@@ -55,6 +55,8 @@ dependencies {
 	implementation("xyz.bluspring.modernnetworking:modernnetworking-api:1.2.4")
 	modImplementation("xyz.bluspring.modernnetworking:modernnetworking-fabric:1.2.4+1.21.10")
 	modImplementation("net.fabricmc:fabric-language-kotlin:1.13.7+kotlin.2.2.21")
+	modCompileOnly("maven.modrinth:flashback:AwyE5yQ2")
+	modRuntimeOnly("maven.modrinth:flashback:AwyE5yQ2")
 	modCompileOnly("maven.modrinth:voxy:0.2.6-alpha")
 	modRuntimeOnly("maven.modrinth:voxy:0.2.6-alpha")
 	modRuntimeOnly("maven.modrinth:sodium:mc1.21.10-0.7.2-fabric")
@@ -72,6 +74,15 @@ dependencies {
 	runtimeOnly('org.apache.commons:commons-pool2:2.12.0')
 	runtimeOnly('org.lz4:lz4-java:1.8.0')
 	runtimeOnly('org.tukaani:xz:1.10')
+
+	runtimeOnly("com.moulberry:mixinconstraints:1.0.8")
+
+    // Lattice (config)
+    modRuntimeOnly("com.moulberry:lattice:1.2.18") {
+        attributes {
+            attribute(Attribute.of("earth.terrarium.cloche.modLoader", String), "fabric")
+        }
+    }
 }
 
 processResources {
